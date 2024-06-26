@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <div>
+        <h1 class="pt-3 text-center">Lançamento do atraso de curvados para o estoque</h1>
+        <hr>
+        <div class="row d-flex justify-content-center">
+            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded">
+                {{ formCurvados.csrf_token }}
+                <legend class=text-center>ATRASO CURVADOS</legend>
+                <fieldset>
+
+                    <div class="row mt-2">
+                        <div class="col-sm-2">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.data.label(class="form-control-label") }}
+
+
+                                {% if formCurvados.data.errors %}
+                                {{ formCurvados.data(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.data.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.data(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.lote.label(class="form-control-label") }}
+
+                                {% if formCurvados.lote.errors %}
+                                {{ formCurvados.lote(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.lote.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.lote(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.pecas.label(class="form-control-label") }}
+
+
+                                {% if formCurvados.pecas.errors %}
+                                {{ formCurvados.pecas(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.pecas.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.pecas(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.cor.label(class="form-control-label") }}
+
+                                {% if formCurvados.cor.errors %}
+                                {{ formCurvados.cor(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.cor.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.cor(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="form-group mt-2">
+                            {{ formCurvados.obs.label(class="form-control-label") }}
+                            {{ formCurvados.obs(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.quantidadeTotal.label(class="form-control-label") }}
+
+
+                                {% if formCurvados.quantidadeTotal.errors %}
+                                {{ formCurvados.quantidadeTotal(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.quantidadeTotal.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.quantidadeTotal(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group mt-2">
+                                {{ formCurvados.quantidadeEntregue.label(class="form-control-label") }}
+
+                                {% if formCurvados.quantidadeEntregue.errors %}
+                                {{ formCurvados.quantidadeEntregue(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formCurvados.quantidadeEntregue.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ formCurvados.quantidadeEntregue(class="form-control") }}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+                <div class="form-group text-center mt-3">
+                    {{ formCurvados.submitAtraso(class="btn btn-outline-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

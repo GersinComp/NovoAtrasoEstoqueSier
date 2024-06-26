@@ -1,0 +1,112 @@
+{% extends 'tabelas.html' %}
+
+{% block table %}
+
+    <div>
+        <h1 class="text-center mt-2">CADEIRAS EM ATRASO</h1>
+        <hr style="margin: 0; padding: 0">
+        <div class="row mt-2">
+            <div class="col-sm-10">
+                <a href="{{ url_for('atrasoCadeiras') }}" style="text-decoration: none">
+                    <button type="button" class="btn btn-outline-primary">
+                        Lançar cadeira
+                    </button>
+                </a>
+            </div>
+            <div class="col-sm-1 mt-1">
+                ORDENAR
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn" style="padding: 0" id="Order_by_Asc" onclick="orderCadeiras('asc')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16"
+                         style="width: 1.5rem; height: 1.5rem; text-decoration: none; margin: 0; padding: 0">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0"/>
+                    </svg>
+                </button>
+
+                <button type="button" class="btn" style="padding: 0" id="Order_by_Desc" onclick="orderCadeiras('desc')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-arrow-up-square-fill"
+                         style="width: 1.5rem; height: 1.5rem; text-decoration: none; margin: 0; padding: 0"
+                         viewBox="0 0 16 16">
+                        <path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <table class="table mt-2">
+            <thead class="table-dark">
+                <tr>
+                    <th class="col-sm-1" scope="col">ID</th>
+                    <th class="col-sm-1" scope="col">DATA</th>
+                    <th class="col-sm-1" scope="col">LOTE</th>
+                    <th class="col-sm-2" scope="col">PEÇA</th>
+                    <th class="col-sm-2" scope="col">COR</th>
+                    <th class="col-sm-2" scope="col">OBSERVAÇÃO</th>
+                    <th class="col-sm-1" scope="col">ENTREGUE</th>
+                    <th class="col-sm-1" scope="col">FALTAM</th>
+                    <th class="col-sm-1" scope="col">VISUALIZAR</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for cadeira in cadeiras %}
+                    <tr>
+                        <th scope="row">{{ cadeira.id }}</th>
+                        <td> {{ cadeira.data.strftime('%d/%m/%Y') }} </td>
+                        <td> {{ cadeira.lote }} </td>
+                        <td> {{ cadeira.pecas }} </td>
+                        <td> {{ cadeira.cor }} </td>
+
+                        <td>
+                            <div class="accordion accordion-flush h-25" id="accordion{{ cadeira.id }}">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-heading{{ cadeira.id }}">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#flush-collapse{{ cadeira.id }}" aria-expanded="false"
+                                                aria-controls="flush-collapse{{ cadeira.id }}"
+                                                style="margin: 0; padding: 0;">
+                                            OBSERVAÇÃO
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapse{{ cadeira.id }}" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-heading{{ cadeira.id }}" data-bs-parent="#accordion{{ cadeira.id }}">
+                                        <div class="accordion-body">
+                                            {{ cadeira.pecas }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td> {{ cadeira.quantidadeTotal }} </td>
+                        <td> {{ cadeira.quantidadeEntregue }} </td>
+
+                        <td style="text-align: center">
+                            <button class="btn btn-light" style="text-decoration: none; margin: 0; padding: 0" id="view">
+                                <a href="{{ url_for('Cadeira', cadeira_id=cadeira.id) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-eye-fill" viewBox="0 0 16 16"
+                                         style="width: 1.5rem; height: 1.5rem; text-decoration: none; margin: 0; padding: 0">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                    </svg>
+                                </a>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function orderCadeiras(order) {
+            window.location.href = `/listarAtraso/Cadeiras?order=${order}`;
+        }
+    </script>
+
+{% endblock %}
