@@ -1,5 +1,5 @@
-# ProjetoIntegradorlll
-Desenvolvimento do projeto integrador 2024.1
+# ATRASO SIER
+Desenvolvimento do Software para gerenciamento do atraso do estoque da empresa
 
 ### Eecute o seguinte comando no terminal
 pip install -r requirements.txt
