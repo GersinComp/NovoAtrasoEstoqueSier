@@ -15,9 +15,7 @@ load_dotenv()
 
 tokenForms = secrets.token_hex(16)
 app.config['SECRET_KEY'] = tokenForms
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///atrasos.db'
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('CONECTOR')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('CONECTOR')
 
 
 db = SQLAlchemy(app)
