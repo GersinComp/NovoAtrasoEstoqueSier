@@ -15,27 +15,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/gerarRecibo', methods=['GET', 'POST'])
-def gerarRecibo():
-    formGerarRecibo = GerarReciboForm()
-    if formGerarRecibo.validate_on_submit():
-        session['dadosPDF'] = {
-            'empresa': current_user.nome,
-            'numero': formGerarRecibo.numero.data,
-            'valor': formGerarRecibo.valor.data,
-            'valorExtenso': formGerarRecibo.valorExtenso.data,
-            'data': formGerarRecibo.data.data.strftime("%Y-%m-%d"),
-            'nome': formGerarRecibo.nome.data,
-            'cpf': formGerarRecibo.cpf.data,
-            'descricao': formGerarRecibo.descricao.data
-        }
-        flash("Recibo gerado com sucesso!", 'alert-success')
-        return redirect(url_for('salvarAssinatura'))
-    elif request.method == 'GET':
-        formGerarRecibo.empresa.data = current_user.nome
-    return render_template('gerarRecibo.html', formGerarRecibo=formGerarRecibo)
-
-
 @app.route('/valor_extenso', methods=['POST'])
 def valor_extenso():
     data = request.json
@@ -44,35 +23,6 @@ def valor_extenso():
     if int(valor) <= 1:
         return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " real"})
     return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " reais"})
-
-
-@app.route('/salvarAssinatura', methods=['GET', 'POST'])
-def salvarAssinatura():
-    formGerarRecibo = GerarReciboForm()
-    dadosPDF = session.get('dadosPDF')
-
-    if dadosPDF:
-        formGerarRecibo.empresa.data = dadosPDF.get('empresa')
-        formGerarRecibo.numero.data = dadosPDF.get('numero')
-        formGerarRecibo.valor.data = dadosPDF.get('valor')
-        formGerarRecibo.valorExtenso.data = dadosPDF.get('valorExtenso')
-        formGerarRecibo.data.data = dadosPDF.get('data')
-        formGerarRecibo.nome.data = dadosPDF.get('nome')
-        formGerarRecibo.cpf.data = dadosPDF.get('cpf')
-        formGerarRecibo.descricao.data = dadosPDF.get('descricao')
-
-    if 'salvarRecibo' in request.form:
-        # Definir o caminho e o nome do arquivo
-        directory = './static/arquivosPDF'
-        filename = "recibo_"
-
-        path = os.path.join(directory, filename)
-
-        # Criar o diretório se não existir
-        os.makedirs(directory, exist_ok=True)
-        return criar_recibo_pdf(path, dadosPDF)
-    return render_template('salvarAssinatura.html', formGerarRecibo=formGerarRecibo, dadosPDF=dadosPDF)
-
 
 
 def criar_recibo_pdf(filename, dadosPDF):
@@ -161,23 +111,6 @@ def enviar_recibo(token):
     db.session.commit()
 
 
-@app.route('/listarRecibos', methods=['GET', 'POST'])
-def listarRecibos():
-    order = request.args.get('order', 'asc')
-    if order == 'desc':
-        recibos = Recibo.query.order_by(Recibo.id.desc()).all()
-    else:
-        recibos = Recibo.query.order_by(Recibo.id.asc()).all()
-
-    return render_template('listarRecibos.html', recibos=recibos)
-
-
-@app.route('/listarRecibo/<recibo_id>', methods=['GET', 'POST'])
-def listarRecibo(recibo_id):
-    recibo = Recibo.query.get(recibo_id)
-    return render_template('recibo.html', recibo=recibo)
-
-
 @app.route('/atrasoCadeiras', methods=['GET', 'POST'])
 def atrasoCadeiras():
     formCadeiras = AtrasoCadeirasForm()
@@ -211,7 +144,7 @@ def listarCadeiras():
 def listarCadeira(cadeira_id):
     cadeira = Cadeiras.query.get(cadeira_id)
     formCadeira = AtrasoCadeirasForm()
-    return render_template('cadeira.html', formCadeira=formCadeira, cadeira=cadeira)
+    return render_template('Cadeira.html', formCadeira=formCadeira, cadeira=cadeira)
 
 
 @app.route('/atrasoCurvados', methods=['GET', 'POST'])
@@ -245,6 +178,6 @@ def listarCurvados():
 @app.route('/Curvado/<int:curvado_id>', methods=['GET', 'POST'], endpoint='Curvado')
 def listarCurvado(curvado_id):
     curvado = Curvados.query.get(curvado_id)
-    return render_template('curvado.html', curvado=curvado)
+    return render_template('Curvado.html', curvado=curvado)
 
 
