@@ -191,6 +191,7 @@ def atrasoCadeiras():
         db.session.add(cadeira)
         db.session.commit()
         flash(f'{cadeira.pecas} foi adicionada ao atraso!', 'alert-success')
+        redirect(url_for('atrasoCadeiras'))
 
     return render_template('atrasoCadeiras.html', formCadeiras=formCadeiras)
 
