@@ -6,7 +6,7 @@
         <h1 class="pt-3 text-center">Lançamento do atraso de cadeiras para o estoque</h1>
         <hr>
         <div class="row d-flex justify-content-center">
-            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded">
+            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded" id="atrasoCadeiras">
                 {{ formCadeiras.csrf_token }}
                 <legend class=text-center>ATRASO CADEIRAS</legend>
                 <fieldset>
@@ -144,18 +144,16 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const formularioRecibo = document.getElementById('formularioRecibo');
-            const LimparFormulario = document.getElementById('clearRecibo');
-            const submitRecibo = document.getElementById('submitRecibo');
+            const formularioatrasoCadeiras = document.getElementById('atrasoCadeiras');
+            const LimparFormulario = document.getElementById('submitAtraso');
 
 
             function limparFormulario() {
-                formularioRecibo.reset();
+                formularioatrasoCadeiras.reset();
             }
 
             function init() {
                 LimparFormulario.addEventListener('click', function (event) {
-                    event.preventDefault(); // Impede o comportamento padrão do botão
                     limparFormulario();
                 });
             }

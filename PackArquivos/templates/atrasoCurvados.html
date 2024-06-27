@@ -6,7 +6,7 @@
         <h1 class="pt-3 text-center">Lançamento do atraso de curvados para o estoque</h1>
         <hr>
         <div class="row d-flex justify-content-center">
-            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded">
+            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded" id="atrasoCurvados">
                 {{ formCurvados.csrf_token }}
                 <legend class=text-center>ATRASO CURVADOS</legend>
                 <fieldset>
@@ -141,5 +141,27 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formularioatrasoCurvados = document.getElementById('atrasoCurvados');
+            const LimparFormulario = document.getElementById('submitAtraso');
+
+
+            function limparFormulario() {
+                formularioatrasoCurvados.reset();
+            }
+
+            function init() {
+                LimparFormulario.addEventListener('click', function (event) {
+                    limparFormulario();
+                });
+            }
+
+            // Inicializa os elementos do DOM
+            init();
+
+        });
+    </script>
 
 {% endblock %}

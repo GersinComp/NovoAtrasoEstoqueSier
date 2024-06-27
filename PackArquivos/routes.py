@@ -210,7 +210,8 @@ def listarCadeiras():
 @app.route('/Cadeira/<int:cadeira_id>', methods=['GET', 'POST'], endpoint='Cadeira')
 def listarCadeira(cadeira_id):
     cadeira = Cadeiras.query.get(cadeira_id)
-    return render_template('cadeira.html', cadeira=cadeira)
+    formCadeira = AtrasoCadeirasForm()
+    return render_template('cadeira.html', formCadeira=formCadeira, cadeira=cadeira)
 
 
 @app.route('/atrasoCurvados', methods=['GET', 'POST'])
