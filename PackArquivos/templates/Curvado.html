@@ -1,121 +1,144 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <div id="messages"></div>
     <div class="container">
-        <h1 class="pt-3 text-center">Editar cadeira em atraso</h1>
+        <h1 class="pt-3 text-center">Editar curvado em atraso</h1>
         <hr>
         <div class="row d-flex justify-content-center">
             <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded">
-                {{ formCadeira.csrf_token }}
-                <legend class="text-center">ATRASO CADEIRAS</legend>
+                {{ formCurvado.csrf_token }}
+                <legend class="text-center">ATRASO CURVADOS</legend>
                 <fieldset>
 
                     <div class="row mt-2">
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
-                                {{ formCadeira.data.label(class="form-control-label") }}
-                                {% if formCadeira.data.errors %}
-                                    {{ formCadeira.data(class="form-control is-invalid") }}
+                                {{ formCurvado.data.label(class="form-control-label") }}
+
+
+                                {% if formCurvado.data.errors %}
+                                    {{ formCurvado.data(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.data.errors %}
+                                        {% for erro in formCurvado.data.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.data(class="form-control") }}
+                                    {{ formCurvado.data(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
+
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
-                                {{ formCadeira.lote.label(class="form-control-label") }}
-                                {% if formCadeira.lote.errors %}
-                                    {{ formCadeira.lote(class="form-control is-invalid") }}
+                                {{ formCurvado.lote.label(class="form-control-label") }}
+
+                                {% if formCurvado.lote.errors %}
+                                    {{ formCurvado.lote(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.lote.errors %}
+                                        {% for erro in formCurvado.lote.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.lote(class="form-control") }}
+                                    {{ formCurvado.lote(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
+
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
-                                {{ formCadeira.pecas.label(class="form-control-label") }}
-                                {% if formCadeira.pecas.errors %}
-                                    {{ formCadeira.pecas(class="form-control is-invalid") }}
+                                {{ formCurvado.pecas.label(class="form-control-label") }}
+
+
+                                {% if formCurvado.pecas.errors %}
+                                    {{ formCurvado.pecas(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.pecas.errors %}
+                                        {% for erro in formCurvado.pecas.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.pecas(class="form-control") }}
+                                    {{ formCurvado.pecas(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
+
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
-                                {{ formCadeira.cor.label(class="form-control-label") }}
-                                {% if formCadeira.cor.errors %}
-                                    {{ formCadeira.cor(class="form-control is-invalid") }}
+                                {{ formCurvado.cor.label(class="form-control-label") }}
+
+                                {% if formCurvado.cor.errors %}
+                                    {{ formCurvado.cor(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.cor.errors %}
+                                        {% for erro in formCurvado.cor.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.cor(class="form-control") }}
+                                    {{ formCurvado.cor(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
+
                     </div>
+
                     <div class="row mt-2">
                         <div class="form-group mt-2">
-                            {{ formCadeira.obs.label(class="form-control-label") }}
-                            {{ formCadeira.obs(class="form-control") }}
+                            {{ formCurvado.obs.label(class="form-control-label") }}
+                            {{ formCurvado.obs(class="form-control") }}
                         </div>
                     </div>
+
                     <div class="row mt-2">
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
-                                {{ formCadeira.quantidadeTotal.label(class="form-control-label") }}
-                                {% if formCadeira.quantidadeTotal.errors %}
-                                    {{ formCadeira.quantidadeTotal(class="form-control is-invalid") }}
+                                {{ formCurvado.quantidadeTotal.label(class="form-control-label") }}
+
+
+                                {% if formCurvado.quantidadeTotal.errors %}
+                                    {{ formCurvado.quantidadeTotal(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.quantidadeTotal.errors %}
+                                        {% for erro in formCurvado.quantidadeTotal.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.quantidadeTotal(class="form-control") }}
+                                    {{ formCurvado.quantidadeTotal(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
+
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
-                                {{ formCadeira.quantidadeEntregue.label(class="form-control-label") }}
-                                {% if formCadeira.quantidadeEntregue.errors %}
-                                    {{ formCadeira.quantidadeEntregue(class="form-control is-invalid") }}
+                                {{ formCurvado.quantidadeEntregue.label(class="form-control-label") }}
+
+                                {% if formCurvado.quantidadeEntregue.errors %}
+                                    {{ formCurvado.quantidadeEntregue(class="form-control is-invalid") }}
                                     <div class="invalid-feedback">
-                                        {% for erro in formCadeira.quantidadeEntregue.errors %}
+                                        {% for erro in formCurvado.quantidadeEntregue.errors %}
                                             {{ erro }}
                                         {% endfor %}
                                     </div>
                                 {% else %}
-                                    {{ formCadeira.quantidadeEntregue(class="form-control") }}
+                                    {{ formCurvado.quantidadeEntregue(class="form-control") }}
                                 {% endif %}
+
                             </div>
                         </div>
                     </div>
+
                 </fieldset>
                 <div class="form-group text-center mt-3">
-                    {{ formCadeira.editarAtraso(class="btn btn-outline-primary") }}
+                    {{ formCurvado.editarAtraso(class="btn btn-outline-primary") }}
                 </div>
             </form>
-
         </div>
     </div>
 

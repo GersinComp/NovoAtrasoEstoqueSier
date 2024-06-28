@@ -1,13 +1,9 @@
-import os
 from urllib import request
-from flask import render_template, flash, redirect, request, url_for, jsonify, session
-from flask_login import current_user
+from flask import render_template, flash, request, jsonify, redirect, url_for, make_response, send_file
 from PackArquivos.forms import *
 from PackArquivos.models import *
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter, landscape
-from reportlab.lib.units import inch
-from num2words import num2words
+from io import BytesIO
 
 
 @app.route('/')
@@ -15,167 +11,40 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/gerarRecibo', methods=['GET', 'POST'])
-def gerarRecibo():
-    formGerarRecibo = GerarReciboForm()
-    if formGerarRecibo.validate_on_submit():
-        session['dadosPDF'] = {
-            'empresa': current_user.nome,
-            'numero': formGerarRecibo.numero.data,
-            'valor': formGerarRecibo.valor.data,
-            'valorExtenso': formGerarRecibo.valorExtenso.data,
-            'data': formGerarRecibo.data.data.strftime("%Y-%m-%d"),
-            'nome': formGerarRecibo.nome.data,
-            'cpf': formGerarRecibo.cpf.data,
-            'descricao': formGerarRecibo.descricao.data
-        }
-        flash("Recibo gerado com sucesso!", 'alert-success')
-        return redirect(url_for('salvarAssinatura'))
-    elif request.method == 'GET':
-        formGerarRecibo.empresa.data = current_user.nome
-    return render_template('gerarRecibo.html', formGerarRecibo=formGerarRecibo)
+@app.route('/gerar_pdf', methods=['GET'])
+def relatorio():
+    gerar_pdf()
+    return send_file(buffer, as_attachment=True)
 
 
-@app.route('/valor_extenso', methods=['POST'])
-def valor_extenso():
-    data = request.json
-    valor = data.get('valor', '0')
-    valor = valor.replace("R$ ", "")
-    if int(valor) <= 1:
-        return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " real"})
-    return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " reais"})
+def gerar_pdf():
+    # Consulta ao banco de dados para obter os dados
+    itens = Cadeiras.query.all()
 
+    # Início da geração do PDF usando reportlab
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer)
 
-@app.route('/salvarAssinatura', methods=['GET', 'POST'])
-def salvarAssinatura():
-    formGerarRecibo = GerarReciboForm()
-    dadosPDF = session.get('dadosPDF')
+    # Configurações de estilos e conteúdo do PDF
+    p.setFont("Helvetica", 12)
+    text = "Relatório de Cadeiras:\n\n"
+    for item in itens:
+        text += f"Data: {item.data}\n"
+        text += f"Lote: {item.lote}\n"
+        text += f"Peças: {item.pecas}\n"
+        text += f"Cor: {item.cor}\n"
+        text += f"Quantidade Total: {item.quantidadeTotal}\n"
+        text += f"Quantidade Entregue: {item.quantidadeEntregue}\n"
+        text += f"Observações: {item.obs}\n\n"
 
-    if dadosPDF:
-        formGerarRecibo.empresa.data = dadosPDF.get('empresa')
-        formGerarRecibo.numero.data = dadosPDF.get('numero')
-        formGerarRecibo.valor.data = dadosPDF.get('valor')
-        formGerarRecibo.valorExtenso.data = dadosPDF.get('valorExtenso')
-        formGerarRecibo.data.data = dadosPDF.get('data')
-        formGerarRecibo.nome.data = dadosPDF.get('nome')
-        formGerarRecibo.cpf.data = dadosPDF.get('cpf')
-        formGerarRecibo.descricao.data = dadosPDF.get('descricao')
+    # Quebrando linhas automaticamente se o texto for longo
+    p.drawString(100, 700, text)
 
-    if 'salvarRecibo' in request.form:
-        # Definir o caminho e o nome do arquivo
-        directory = './static/arquivosPDF'
-        filename = "recibo_"
+    # Salvando o PDF
+    p.showPage()
+    p.save()
 
-        path = os.path.join(directory, filename)
-
-        # Criar o diretório se não existir
-        os.makedirs(directory, exist_ok=True)
-        return criar_recibo_pdf(path, dadosPDF)
-    return render_template('salvarAssinatura.html', formGerarRecibo=formGerarRecibo, dadosPDF=dadosPDF)
-
-
-
-def criar_recibo_pdf(filename, dadosPDF):
-    c = canvas.Canvas(filename, pagesize=landscape(letter))
-
-    width, height = landscape(letter)
-
-    # Definindo margens
-    margin_x = 0.5 * inch
-    margin_y = 0.7 * inch  # Reduzindo a margem superior
-
-    # Definindo a largura e altura do retângulo
-    rect_width = width - 2 * margin_x
-    rect_height = height - 2 * margin_y
-
-    # Adicionar retângulo ao redor do recibo
-    c.rect(margin_x, margin_y, rect_width, rect_height)
-
-    # Título
-    c.setFont("Helvetica-Bold", 44)
-    c.drawCentredString(width / 5, height - margin_y - 0.8 * inch, "RECIBO")
-
-    # Data e local de emissão
-    c.setFont("Times-Roman", 20)
-    c.setFillColorRGB(0.5, 0.5, 0.5)  # Cor cinza
-    c.drawRightString(width / 2.54 - 0.5 * inch, height - margin_y - 1.4 * inch, "Local e data de emissão: ")
-    c.setFillColorRGB(0, 0, 0)  # Voltando para preto
-    c.setFont("Helvetica", 20)
-    c.drawCentredString(width / 5.20, height - margin_y - 2.5 * inch, f"Data:  {(dadosPDF['data'])}")
-
-    # Calculando a posição para o texto "Nº"
-    num_recibo_text = f"Nº {dadosPDF['numero']}"
-    num_recibo_width = c.stringWidth(num_recibo_text, "Helvetica", 30)
-    num_recibo_x = width - margin_x - num_recibo_width
-    num_recibo_y = height - margin_y - 0.7 * inch
-
-    # Desenhando o texto "Nº" na margem direita
-    c.drawString(num_recibo_x, num_recibo_y, num_recibo_text)
-
-    # Recebido de
-    c.drawString(margin_x + 0.5 * inch, height - margin_y - 3 * inch, f"Recebi de: {dadosPDF['empresa']}")
-    c.drawString(margin_x + 5.8 * inch, height - margin_y - 3 * inch,
-                 f"a quantia de: {dadosPDF['valor']}")
-
-    # Quantia por extenso
-    c.drawString(margin_x + 0.5 * inch, height - margin_y - 3.5 * inch, "Quantia por extenso:")
-    c.roundRect(margin_x + 0.5 * inch, height - margin_y - 4.5 * inch, 9 * inch, 0.8 * inch, 0.1 * inch)
-    c.drawString(margin_x + 0.6 * inch, height - margin_y - 4.3 * inch, f"{dadosPDF['valorExtenso']}")
-
-    # Conceito
-    c.drawString(margin_x + 0.5 * inch, height - margin_y - 5 * inch,
-                 f"Referente a: {dadosPDF['descricao']}")
-    c.drawString(margin_x + 0.5 * inch, height - margin_y - 5.5 * inch,
-                 "__________________________________________________________")
-
-    # Nome e assinatura
-    signature_text = "Nome e assinatura do recebedor"
-    signature_text_width = c.stringWidth(signature_text, "Times-Roman", 14)
-    signature_text_x = margin_x + (rect_width - signature_text_width) / 2
-    c.setFont("Times-Roman", 18)
-    c.setFillColorRGB(0.5, 0.5, 0.5)  # Cor cinza
-    c.drawCentredString(width / 2, height - margin_y - 7 * inch, signature_text)
-    c.setFillColorRGB(0, 0, 0)  # Voltando para preto
-
-    # Adicionar a imagem da assinatura
-    image_width = 150
-    image_height = 70
-    image_x = (width - image_width) / 2
-    image_y = height - margin_y - 6.6 * inch
-    c.drawImage("./PackArquivos/static/arquivosPDF/assinatura.png", image_x, image_y,
-                width=image_width, height=image_height)
-
-    c.line(margin_x + 2 * inch, height - margin_y - 6.6 * inch, margin_x + rect_width - 2 * inch,
-           height - margin_y - 6.6 * inch)
-
-    c.save()
-
-
-def enviar_recibo(token):
-    dadosPDF = session.get('dadosPDF')
-    recibo = Recibo(empresa=dadosPDF['empresa'], valor=dadosPDF['valorExtenso'],
-                    data=dadosPDF['data'], nome=dadosPDF['nome'],
-                    cpf=dadosPDF['cpf'], descricao=dadosPDF['descricao'],
-                    token=token, usuario=current_user)
-    db.session.add(recibo)
-    db.session.commit()
-
-
-@app.route('/listarRecibos', methods=['GET', 'POST'])
-def listarRecibos():
-    order = request.args.get('order', 'asc')
-    if order == 'desc':
-        recibos = Recibo.query.order_by(Recibo.id.desc()).all()
-    else:
-        recibos = Recibo.query.order_by(Recibo.id.asc()).all()
-
-    return render_template('listarRecibos.html', recibos=recibos)
-
-
-@app.route('/listarRecibo/<recibo_id>', methods=['GET', 'POST'])
-def listarRecibo(recibo_id):
-    recibo = Recibo.query.get(recibo_id)
-    return render_template('recibo.html', recibo=recibo)
+    buffer.seek(0)
 
 
 @app.route('/atrasoCadeiras', methods=['GET', 'POST'])
@@ -190,10 +59,12 @@ def atrasoCadeiras():
                            obs=formCadeiras.obs.data)
         db.session.add(cadeira)
         db.session.commit()
-        flash(f'{cadeira.pecas} foi adicionada ao atraso!', 'alert-success')
-        redirect(url_for('atrasoCadeiras'))
+        return jsonify({'success': True, 'message': f'{cadeira.pecas} foi adicionado ao atraso!'})
 
     return render_template('atrasoCadeiras.html', formCadeiras=formCadeiras)
+
+# Certifique-se de importar jsonify em algum lugar no início do arquivo:
+# from flask import jsonify
 
 
 @app.route('/listarAtraso/Cadeiras', methods=['GET', 'POST'])
@@ -211,6 +82,27 @@ def listarCadeiras():
 def listarCadeira(cadeira_id):
     cadeira = Cadeiras.query.get(cadeira_id)
     formCadeira = AtrasoCadeirasForm()
+    if request.method == 'GET':
+        formCadeira.data.data = cadeira.data
+        formCadeira.lote.data = cadeira.lote
+        formCadeira.pecas.data = cadeira.pecas
+        formCadeira.cor.data = cadeira.cor
+        formCadeira.obs.data = cadeira.obs
+        formCadeira.quantidadeTotal.data = cadeira.quantidadeTotal
+        formCadeira.quantidadeEntregue.data = cadeira.quantidadeEntregue
+
+    elif formCadeira.validate_on_submit():
+        cadeira.data = formCadeira.data.data
+        cadeira.lote = formCadeira.lote.data
+        cadeira.pecas = formCadeira.pecas.data
+        cadeira.cor = formCadeira.cor.data
+        cadeira.obs = formCadeira.obs.data
+        cadeira.quantidadeTotal = formCadeira.quantidadeTotal.data
+        cadeira.quantidadeEntregue = formCadeira.quantidadeEntregue.data
+        db.session.commit()
+        flash('Cadeira editada com sucesso!', 'alert-success')
+        return redirect(url_for('listarCadeiras'))
+
     return render_template('cadeira.html', formCadeira=formCadeira, cadeira=cadeira)
 
 
@@ -226,7 +118,7 @@ def atrasoCurvados():
                            obs=formCurvados.obs.data)
         db.session.add(curvado)
         db.session.commit()
-        flash(f'{curvado.pecas} foi adicionada ao atraso!', 'alert-success')
+        return jsonify({'success': True, 'message': f'{curvado.pecas} foi adicionado ao atraso!'})
 
     return render_template('atrasoCurvados.html', formCurvados=formCurvados)
 
@@ -245,6 +137,28 @@ def listarCurvados():
 @app.route('/Curvado/<int:curvado_id>', methods=['GET', 'POST'], endpoint='Curvado')
 def listarCurvado(curvado_id):
     curvado = Curvados.query.get(curvado_id)
-    return render_template('curvado.html', curvado=curvado)
+    formCurvado = AtrasoCurvadosForm()
+    if request.method == 'GET':
+        formCurvado.data.data = curvado.data
+        formCurvado.lote.data = curvado.lote
+        formCurvado.pecas.data = curvado.pecas
+        formCurvado.cor.data = curvado.cor
+        formCurvado.obs.data = curvado.obs
+        formCurvado.quantidadeTotal.data = curvado.quantidadeTotal
+        formCurvado.quantidadeEntregue.data = curvado.quantidadeEntregue
+
+    elif formCurvado.validate_on_submit():
+        curvado.data = formCurvado.data.data
+        curvado.lote = formCurvado.lote.data
+        curvado.pecas = formCurvado.pecas.data
+        curvado.cor = formCurvado.cor.data
+        curvado.obs = formCurvado.obs.data
+        curvado.quantidadeTotal = formCurvado.quantidadeTotal.data
+        curvado.quantidadeEntregue = formCurvado.quantidadeEntregue.data
+        db.session.commit()
+        flash('Curvado editado com sucesso!', 'alert-success')
+        return redirect(url_for('listarCurvados'))
+
+    return render_template('Curvado.html', formCurvado=formCurvado, curvado=curvado)
 
 

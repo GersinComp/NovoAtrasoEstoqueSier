@@ -42,8 +42,8 @@
                     <th class="col-sm-1" scope="col">DATA</th>
                     <th class="col-sm-1" scope="col">LOTE</th>
                     <th class="col-sm-2" scope="col">PEÇA</th>
-                    <th class="col-sm-2" scope="col">COR</th>
-                    <th class="col-sm-2" scope="col">OBSERVAÇÃO</th>
+                    <th class="col-sm-1" scope="col">COR</th>
+                    <th class="col-sm-3" scope="col">OBSERVAÇÃO</th>
                     <th class="col-sm-1" scope="col">ENTREGUE</th>
                     <th class="col-sm-1" scope="col">FALTAM</th>
                     <th class="col-sm-1 text-center" scope="col">EDITAR</th>
@@ -75,7 +75,7 @@
                                         <div id="flush-collapse{{ curvado.id }}" class="accordion-collapse collapse"
                                              aria-labelledby="flush-heading{{ curvado.id }}" data-bs-parent="#accordion{{ curvado.id }}">
                                             <div class="accordion-body">
-                                                {{ curvado.pecas }}
+                                                {{ curvado.obs }}
                                             </div>
                                         </div>
                                     </div>

@@ -6,24 +6,28 @@ from datetime import date
 
 
 class AtrasoCadeirasForm(FlaskForm):
-    data = DateField('Data', validators=[DataRequired()], render_kw={"value": date.today().strftime("%Y-%m-%d")})
+    data = DateField('Data', validators=[DataRequired()],
+                     render_kw={"value": date.today().strftime("%Y-%m-%d")})
     lote = IntegerField('Lote', validators=[DataRequired()])
     pecas = StringField('Peças', validators=[DataRequired()])
     cor = StringField('cor', validators=[DataRequired()])
     quantidadeTotal = IntegerField('Quantidade total', validators=[DataRequired()])
-    quantidadeEntregue = IntegerField('Quantidade entregue', render_kw={"value": 0})
+    quantidadeEntregue = IntegerField('Quantidade entregue')
     obs = TextAreaField('OBSERVAÇÃO')
     submitAtraso = SubmitField('Adicionar')
+    editarAtraso = SubmitField('Salvar alterações')
 
 
 class AtrasoCurvadosForm(FlaskForm):
-    data = DateField('Data', validators=[DataRequired()], render_kw={"value": date.today().strftime("%Y-%m-%d")})
+    data = DateField('Data', validators=[DataRequired()],
+                     render_kw={"value": date.today().strftime("%Y-%m-%d")})
     lote = IntegerField('Lote', validators=[DataRequired()])
     pecas = StringField('Peças', validators=[DataRequired()])
     cor = StringField('cor', validators=[DataRequired()])
     quantidadeTotal = IntegerField('Quantidade total', validators=[DataRequired()])
-    quantidadeEntregue = IntegerField('Quantidade entregue', render_kw={"value": 0})
+    quantidadeEntregue = IntegerField('Quantidade entregue')
     obs = TextAreaField('OBSERVAÇÃO')
     submitAtraso = SubmitField('Adicionar')
+    editarAtraso = SubmitField('Salvar alterações')
 
 

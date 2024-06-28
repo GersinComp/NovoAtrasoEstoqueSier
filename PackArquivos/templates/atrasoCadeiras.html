@@ -1,169 +1,147 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-    <div>
+    <div id="messages"></div>
+    <div class="container">
         <h1 class="pt-3 text-center">Lançamento do atraso de cadeiras para o estoque</h1>
         <hr>
         <div class="row d-flex justify-content-center">
-            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded" id="atrasoCadeiras">
+            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded"
+                  id="atrasoCadeiras">
                 {{ formCadeiras.csrf_token }}
-                <legend class=text-center>ATRASO CADEIRAS</legend>
+                <legend class="text-center">ATRASO CADEIRAS</legend>
                 <fieldset>
 
                     <div class="row mt-2">
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.data.label(class="form-control-label") }}
-
-
                                 {% if formCadeiras.data.errors %}
-                                {{ formCadeiras.data(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.data.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.data(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.data.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.data(class="form-control") }}
+                                    {{ formCadeiras.data(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
-
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.lote.label(class="form-control-label") }}
-
                                 {% if formCadeiras.lote.errors %}
-                                {{ formCadeiras.lote(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.lote.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.lote(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.lote.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.lote(class="form-control") }}
+                                    {{ formCadeiras.lote(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
-
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.pecas.label(class="form-control-label") }}
-
-
                                 {% if formCadeiras.pecas.errors %}
-                                {{ formCadeiras.pecas(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.pecas.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.pecas(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.pecas.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.pecas(class="form-control") }}
+                                    {{ formCadeiras.pecas(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
-
                         <div class="col-sm-2">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.cor.label(class="form-control-label") }}
-
                                 {% if formCadeiras.cor.errors %}
-                                {{ formCadeiras.cor(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.cor.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.cor(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.cor.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.cor(class="form-control") }}
+                                    {{ formCadeiras.cor(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row mt-2">
                         <div class="form-group mt-2">
                             {{ formCadeiras.obs.label(class="form-control-label") }}
                             {{ formCadeiras.obs(class="form-control") }}
                         </div>
                     </div>
-
                     <div class="row mt-2">
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.quantidadeTotal.label(class="form-control-label") }}
-
-
                                 {% if formCadeiras.quantidadeTotal.errors %}
-                                {{ formCadeiras.quantidadeTotal(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.quantidadeTotal.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.quantidadeTotal(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.quantidadeTotal.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.quantidadeTotal(class="form-control") }}
+                                    {{ formCadeiras.quantidadeTotal(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
-
                         <div class="col-sm-6">
                             <div class="form-group mt-2">
                                 {{ formCadeiras.quantidadeEntregue.label(class="form-control-label") }}
-
                                 {% if formCadeiras.quantidadeEntregue.errors %}
-                                {{ formCadeiras.quantidadeEntregue(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCadeiras.quantidadeEntregue.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCadeiras.quantidadeEntregue(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCadeiras.quantidadeEntregue.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCadeiras.quantidadeEntregue(class="form-control") }}
+                                    {{ formCadeiras.quantidadeEntregue(class="form-control") }}
                                 {% endif %}
-
                             </div>
                         </div>
                     </div>
-
                 </fieldset>
                 <div class="form-group text-center mt-3">
                     {{ formCadeiras.submitAtraso(class="btn btn-outline-primary") }}
                 </div>
             </form>
+
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const formularioatrasoCadeiras = document.getElementById('atrasoCadeiras');
-            const LimparFormulario = document.getElementById('submitAtraso');
-
-
-            function limparFormulario() {
-                formularioatrasoCadeiras.reset();
-            }
-
-            function init() {
-                LimparFormulario.addEventListener('click', function (event) {
-                    limparFormulario();
+        $(document).ready(function () {
+            $('#atrasoCadeiras').on('submit', function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/atrasoCadeiras',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#atrasoCadeiras')[0].reset(); // Limpar o formulário
+                            $('#lote').focus(); // Focar no campo "lote"
+                            $('#messages').html('<div class="alert alert-success">' + response.message + '</div>');
+                        } else {
+                            $('#messages').html('<div class="alert alert-danger">' + response.message + '</div>');
+                        }
+                    }
                 });
-            }
-
-            // Inicializa os elementos do DOM
-            init();
-
+            });
         });
     </script>
 
 {% endblock %}
-
-

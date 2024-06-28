@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-    <div>
+    <div id="messages"></div>
+    <div class="container">
         <h1 class="pt-3 text-center">Lançamento do atraso de curvados para o estoque</h1>
         <hr>
         <div class="row d-flex justify-content-center">
-            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded" id="atrasoCurvados">
+            <form method="POST" action="" class="border m-5 p-5 w-100 p-3 shadow p-3 mb-5 bg-body rounded"
+                  id="atrasoCurvados">
                 {{ formCurvados.csrf_token }}
-                <legend class=text-center>ATRASO CURVADOS</legend>
+                <legend class="text-center">ATRASO CURVADOS</legend>
                 <fieldset>
 
                     <div class="row mt-2">
@@ -18,14 +19,14 @@
 
 
                                 {% if formCurvados.data.errors %}
-                                {{ formCurvados.data(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.data.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.data(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.data.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.data(class="form-control") }}
+                                    {{ formCurvados.data(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -36,14 +37,14 @@
                                 {{ formCurvados.lote.label(class="form-control-label") }}
 
                                 {% if formCurvados.lote.errors %}
-                                {{ formCurvados.lote(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.lote.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.lote(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.lote.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.lote(class="form-control") }}
+                                    {{ formCurvados.lote(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -55,14 +56,14 @@
 
 
                                 {% if formCurvados.pecas.errors %}
-                                {{ formCurvados.pecas(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.pecas.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.pecas(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.pecas.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.pecas(class="form-control") }}
+                                    {{ formCurvados.pecas(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -73,14 +74,14 @@
                                 {{ formCurvados.cor.label(class="form-control-label") }}
 
                                 {% if formCurvados.cor.errors %}
-                                {{ formCurvados.cor(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.cor.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.cor(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.cor.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.cor(class="form-control") }}
+                                    {{ formCurvados.cor(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -102,14 +103,14 @@
 
 
                                 {% if formCurvados.quantidadeTotal.errors %}
-                                {{ formCurvados.quantidadeTotal(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.quantidadeTotal.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.quantidadeTotal(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.quantidadeTotal.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.quantidadeTotal(class="form-control") }}
+                                    {{ formCurvados.quantidadeTotal(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -120,14 +121,14 @@
                                 {{ formCurvados.quantidadeEntregue.label(class="form-control-label") }}
 
                                 {% if formCurvados.quantidadeEntregue.errors %}
-                                {{ formCurvados.quantidadeEntregue(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in formCurvados.quantidadeEntregue.errors %}
-                                    {{ erro }}
-                                    {% endfor %}
-                                </div>
+                                    {{ formCurvados.quantidadeEntregue(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in formCurvados.quantidadeEntregue.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
                                 {% else %}
-                                {{ formCurvados.quantidadeEntregue(class="form-control") }}
+                                    {{ formCurvados.quantidadeEntregue(class="form-control") }}
                                 {% endif %}
 
                             </div>
@@ -143,24 +144,25 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const formularioatrasoCurvados = document.getElementById('atrasoCurvados');
-            const LimparFormulario = document.getElementById('submitAtraso');
-
-
-            function limparFormulario() {
-                formularioatrasoCurvados.reset();
-            }
-
-            function init() {
-                LimparFormulario.addEventListener('click', function (event) {
-                    limparFormulario();
+        $(document).ready(function () {
+            $('#atrasoCurvados').on('submit', function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/atrasoCurvados',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#atrasoCurvados')[0].reset(); // Limpar o formulário
+                            $('#lote').focus(); // Focar no campo "lote"
+                            $('#messages').html('<div class="alert alert-success">' + response.message + '</div>');
+                        } else {
+                            $('#messages').html('<div class="alert alert-danger">' + response.message + '</div>');
+                        }
+                    }
                 });
-            }
-
-            // Inicializa os elementos do DOM
-            init();
-
+            });
         });
     </script>
 
