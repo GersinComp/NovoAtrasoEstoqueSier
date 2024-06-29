@@ -9,9 +9,12 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    dataframe = Cadeiras.query.all()
+    tamanho_df = len(dataframe)
+
+    return render_template('index.html', dataframe=dataframe, tamanho_df=tamanho_df)
 
 
 @app.route('/generate_pdf/<categoria>')

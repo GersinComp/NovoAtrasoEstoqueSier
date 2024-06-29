@@ -1,7 +1,46 @@
 {% extends 'base.html' %}
 
-{% block body %}
-    <div class="container">
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
 
+{% block body %}
+{#    {{ dataframe[0]['data'] }}#}
+    <div class="table-responsive grid text-center table-container">
+        <table class="table table-secundary table-striped table-bordered border-dark" id="tabela">
+            <thead class="table-primary table-bordered border-dark">
+            <tr>
+                <th class="col-sm-2" scope="col">DATA</th>
+                <th class="col-sm-1" scope="col">LOTE</th>
+                <th class="col-sm-7" scope="col">PEÇA</th>
+                <th class="col-sm-1" scope="col">COR</th>
+                <th class="col-sm-1" scope="col">FALTAM</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for i in range(tamanho_df) %}
+                    <tr class="border-dark">
+                        <td class="align-middle">
+                            {{ dataframe[i]['data'].strftime('%d-%m-%Y') }}
+                        </td>
+                        <td class="align-middle">
+                            {{ dataframe[i]['lote'] }}
+                        </td>
+                        <td class="align-middle">
+                            {{ dataframe[i]['pecas'] }}
+                        </td>
+                        <td class="align-middle">
+                            {{ dataframe[i]['cor'] }}
+                        </td>
+                        <td class="align-middle">
+                            {{ (dataframe[i]['quantidadeTotal'] - dataframe[i]['quantidadeEntregue']) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
     </div>
 {% endblock %}
