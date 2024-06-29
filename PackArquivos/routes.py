@@ -1,12 +1,13 @@
-import io
 from urllib import request
-from flask import render_template, flash, request, jsonify, redirect, url_for, make_response, Response
+from flask import render_template, flash, request, jsonify, redirect, url_for, make_response
 from PackArquivos.forms import *
 from PackArquivos.models import *
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm
+import io
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -21,36 +22,80 @@ def index():
 def generate_pdf(categoria):
     if categoria == 'cadeiras':
         items = Cadeiras.query.all()
-        titulo = "Relatorio de cadeiras"
+        titulo = "Relatório de Cadeiras"
     elif categoria == 'curvados':
         items = Curvados.query.all()
-        titulo = "Relatorio de curvados"
+        titulo = "Relatório de Curvados"
 
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=landscape(letter),
-                            rightMargin=72, leftMargin=72, topMargin=0, bottomMargin=0)
+    doc = SimpleDocTemplate(buffer, pagesize=landscape(letter), rightMargin=72, leftMargin=72, topMargin=0, bottomMargin=0)
     elements = []
 
     styles = getSampleStyleSheet()
-    title = Paragraph(titulo, styles['Title'])
+    title_style = styles['Title']
+    title_style.alignment = 1  # Centraliza o título
+
+    title = Paragraph(titulo, title_style)
     elements.append(title)
 
-    data = [['ID', 'DATA', 'LOTE', 'PEÇA', 'COR', 'OBSERVAÇÃO', 'TOTAL', 'ENTREGUE', 'FALTAM']]
+    # Estilo das células da tabela
+    table_header_style = ParagraphStyle(
+        name='TableHeader',
+        fontSize=10,
+        textColor=colors.white,
+        alignment=1,  # Centraliza o texto
+        fontName='Helvetica-Bold'
+    )
+
+    table_cell_style = ParagraphStyle(
+        name='TableCell',
+        fontSize=10,
+        alignment=1,  # Centraliza o texto
+        fontName='Helvetica'
+    )
+
+    data = [
+        [
+            Paragraph("ID", table_header_style),
+            Paragraph("DATA", table_header_style),
+            Paragraph("LOTE", table_header_style),
+            Paragraph("PEÇA", table_header_style),
+            Paragraph("COR", table_header_style),
+            Paragraph("OBSERVAÇÃO", table_header_style),
+            Paragraph("TOTAL", table_header_style),
+            Paragraph("ENTREGUE", table_header_style),
+            Paragraph("FALTAM", table_header_style)
+        ]
+    ]
 
     for item in items:
-        data.append([item.id, item.data, item.lote, item.pecas, item.cor, item.obs, item.quantidadeTotal,
-                     item.quantidadeEntregue, (item.quantidadeTotal - item.quantidadeEntregue)])
+        formatted_row = [
+            Paragraph(str(item.id), table_cell_style),
+            Paragraph(item.data.strftime('%d/%m/%Y'), table_cell_style),
+            Paragraph((str(item.lote)), table_cell_style),
+            Paragraph(item.pecas, table_cell_style),
+            Paragraph(item.cor, table_cell_style),
+            Paragraph(item.obs, table_cell_style),
+            Paragraph(str(item.quantidadeTotal), table_cell_style),
+            Paragraph(str(item.quantidadeEntregue), table_cell_style),
+            Paragraph(str(item.quantidadeTotal - item.quantidadeEntregue), table_cell_style)
+        ]
+        data.append(formatted_row)
 
-    table = Table(data)
+    # Define as larguras das colunas
+    col_widths = [1*cm, 3*cm, 2*cm, 4*cm, 3*cm, 6*cm, 3*cm, 3*cm, 3*cm]
+
+    table = Table(data, colWidths=col_widths)
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # Alinha o texto verticalmente ao centro
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
     ]))
 
     elements.append(table)

@@ -7,7 +7,7 @@ body {
 .table-container {
     width: 100%;
     overflow-y: auto;
-    max-height: 696px; /* Defina uma altura máxima para a tabela */
+    max-height: 714px; /* Defina uma altura máxima para a tabela */
 }
 
 table {
