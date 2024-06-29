@@ -11,12 +11,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/gerar_pdf', methods=['GET'])
-def relatorio():
-    gerar_pdf()
-    return send_file(buffer, as_attachment=True)
-
-
+@app.route('/gerar_pdf/<>', methods=['GET'])
 def gerar_pdf():
     # Consulta ao banco de dados para obter os dados
     itens = Cadeiras.query.all()
@@ -45,6 +40,7 @@ def gerar_pdf():
     p.save()
 
     buffer.seek(0)
+    return send_file(buffer, as_attachment=True)
 
 
 @app.route('/atrasoCadeiras', methods=['GET', 'POST'])
@@ -62,9 +58,6 @@ def atrasoCadeiras():
         return jsonify({'success': True, 'message': f'{cadeira.pecas} foi adicionado ao atraso!'})
 
     return render_template('atrasoCadeiras.html', formCadeiras=formCadeiras)
-
-# Certifique-se de importar jsonify em algum lugar no início do arquivo:
-# from flask import jsonify
 
 
 @app.route('/listarAtraso/Cadeiras', methods=['GET', 'POST'])
@@ -104,6 +97,15 @@ def listarCadeira(cadeira_id):
         return redirect(url_for('listarCadeiras'))
 
     return render_template('cadeira.html', formCadeira=formCadeira, cadeira=cadeira)
+
+
+@app.route('/Cadeira/<int:cadeira_id>/excluirCadeira', methods=['GET', 'POST'])
+def excluirCadeira(cadeira_id):
+    cadeira = Cadeiras.query.get(cadeira_id)
+    db.session.delete(cadeira)
+    db.session.commit()
+    flash(f'{cadeira.pecas} excluido!', 'alert-danger')
+    return redirect(url_for('listarCadeiras'))
 
 
 @app.route('/atrasoCurvados', methods=['GET', 'POST'])
@@ -162,3 +164,10 @@ def listarCurvado(curvado_id):
     return render_template('Curvado.html', formCurvado=formCurvado, curvado=curvado)
 
 
+@app.route('/Curvado/<int:curvado_id>/excluirCurvado', methods=['GET', 'POST'])
+def excluirCurvado(curvado_id):
+    curvado = Curvados.query.get(curvado_id)
+    db.session.delete(curvado)
+    db.session.commit()
+    flash(f'{curvado.pecas} excluido!', 'alert-danger')
+    return redirect(url_for('listarCurvados'))
