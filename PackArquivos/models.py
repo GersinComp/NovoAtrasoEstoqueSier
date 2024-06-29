@@ -50,7 +50,7 @@ class Cadeiras(db.Model):
     cor = db.Column(db.String(80), nullable=False, default="Undefined")
     quantidadeTotal = db.Column(db.Integer, nullable=False, default=0)
     quantidadeEntregue = db.Column(db.Integer, default=0)
-    obs = db.Column(db.Text(), default="")
+    obs = db.Column(db.Text(), default="-")
 
 
 class Curvados(db.Model):
@@ -61,7 +61,7 @@ class Curvados(db.Model):
     cor = db.Column(db.String(80), nullable=False, default="Undefined")
     quantidadeTotal = db.Column(db.Integer, nullable=False, default=0)
     quantidadeEntregue = db.Column(db.Integer, default=0)
-    obs = db.Column(db.Text(), default="")
+    obs = db.Column(db.Text(), default="-")
 
 
 with app.app_context():

@@ -1,46 +1,66 @@
+import io
 from urllib import request
-from flask import render_template, flash, request, jsonify, redirect, url_for, make_response, send_file
+from flask import render_template, flash, request, jsonify, redirect, url_for, make_response, Response
 from PackArquivos.forms import *
 from PackArquivos.models import *
-from reportlab.pdfgen import canvas
-from io import BytesIO
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
 
-@app.route('/gerar_pdf/<>', methods=['GET'])
-def gerar_pdf():
-    # Consulta ao banco de dados para obter os dados
-    itens = Cadeiras.query.all()
+@app.route('/generate_pdf/<categoria>')
+def generate_pdf(categoria):
+    if categoria == 'cadeiras':
+        items = Cadeiras.query.all()
+        titulo = "Relatorio de cadeiras"
+    elif categoria == 'curvados':
+        items = Curvados.query.all()
+        titulo = "Relatorio de curvados"
 
-    # Início da geração do PDF usando reportlab
-    buffer = BytesIO()
-    p = canvas.Canvas(buffer)
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=landscape(letter),
+                            rightMargin=72, leftMargin=72, topMargin=0, bottomMargin=0)
+    elements = []
 
-    # Configurações de estilos e conteúdo do PDF
-    p.setFont("Helvetica", 12)
-    text = "Relatório de Cadeiras:\n\n"
-    for item in itens:
-        text += f"Data: {item.data}\n"
-        text += f"Lote: {item.lote}\n"
-        text += f"Peças: {item.pecas}\n"
-        text += f"Cor: {item.cor}\n"
-        text += f"Quantidade Total: {item.quantidadeTotal}\n"
-        text += f"Quantidade Entregue: {item.quantidadeEntregue}\n"
-        text += f"Observações: {item.obs}\n\n"
+    styles = getSampleStyleSheet()
+    title = Paragraph(titulo, styles['Title'])
+    elements.append(title)
 
-    # Quebrando linhas automaticamente se o texto for longo
-    p.drawString(100, 700, text)
+    data = [['ID', 'DATA', 'LOTE', 'PEÇA', 'COR', 'OBSERVAÇÃO', 'TOTAL', 'ENTREGUE', 'FALTAM']]
 
-    # Salvando o PDF
-    p.showPage()
-    p.save()
+    for item in items:
+        data.append([item.id, item.data, item.lote, item.pecas, item.cor, item.obs, item.quantidadeTotal,
+                     item.quantidadeEntregue, (item.quantidadeTotal - item.quantidadeEntregue)])
 
-    buffer.seek(0)
-    return send_file(buffer, as_attachment=True)
+    table = Table(data)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    elements.append(table)
+    doc.build(elements)
+
+    response = make_response(buffer.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    if categoria == 'cadeiras':
+        response.headers['Content-Disposition'] = 'attachment; filename=relatorio_cadeiras.pdf'
+    elif categoria == 'curvados':
+        response.headers['Content-Disposition'] = 'attachment; filename=relatorio_curvados.pdf'
+
+    return response
 
 
 @app.route('/atrasoCadeiras', methods=['GET', 'POST'])
