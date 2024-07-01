@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-from PackArquivos.models import *
+from wtforms import StringField, SubmitField, TextAreaField, DateField, IntegerField
+from wtforms.validators import DataRequired
 from datetime import date
 
 
@@ -29,5 +28,4 @@ class AtrasoCurvadosForm(FlaskForm):
     obs = TextAreaField('OBSERVAÇÃO')
     submitAtraso = SubmitField('Adicionar')
     editarAtraso = SubmitField('Salvar alterações')
-
 

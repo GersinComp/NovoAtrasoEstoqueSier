@@ -1,4 +1,3 @@
-import secrets
 from datetime import datetime
 from pytz import timezone
 from PackArquivos import app, db
