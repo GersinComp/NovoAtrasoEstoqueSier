@@ -21,23 +21,27 @@
             <tbody>
 
                 {% for i in range(tamanho_df) %}
-                    <tr class="border-dark">
-                        <td class="align-middle">
-                            {{ dataframe[i]['data'].strftime('%d-%m-%Y') }}
-                        </td>
-                        <td class="align-middle">
-                            {{ dataframe[i]['lote'] }}
-                        </td>
-                        <td class="align-middle">
-                            {{ dataframe[i]['pecas'] }}
-                        </td>
-                        <td class="align-middle">
-                            {{ dataframe[i]['cor'] }}
-                        </td>
-                        <td class="align-middle">
-                            {{ (dataframe[i]['quantidadeTotal'] - dataframe[i]['quantidadeEntregue']) }}
-                        </td>
-                    </tr>
+                    {% if (dataframe[i]['quantidadeTotal'] - dataframe[i]['quantidadeEntregue']) > 0 %}
+
+                        <tr class="border-dark">
+                            <td class="align-middle">
+                                {{ dataframe[i]['data'].strftime('%d/%m/%Y') }}
+                            </td>
+                            <td class="align-middle">
+                                {{ dataframe[i]['lote'] }}
+                            </td>
+                            <td class="align-middle">
+                                {{ dataframe[i]['pecas'] }}
+                            </td>
+                            <td class="align-middle">
+                                {{ dataframe[i]['cor'] }}
+                            </td>
+                            <td class="align-middle">
+                                {{ (dataframe[i]['quantidadeTotal'] - dataframe[i]['quantidadeEntregue']) }}
+                            </td>
+                        </tr>
+                    {% else %}
+                    {% endif %}
                 {% endfor %}
 
             </tbody>

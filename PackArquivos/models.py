@@ -15,7 +15,7 @@ def horarioCriado():
     brasilia_timezone = timezone('America/Sao_Paulo')
 
     # Obtém a data e hora atual em Brasília
-    return datetime.now(brasilia_timezone).strftime('%Y-%m-%d-%H-%M-%S')
+    return datetime.now(brasilia_timezone).strftime('%Y/%m/%d')
 
 
 class Usuario(db.Model, UserMixin):

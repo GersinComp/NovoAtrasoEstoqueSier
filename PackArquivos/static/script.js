@@ -10,7 +10,7 @@ function rolarScrollSuave() {
     var distanciaPorPasso = posicaoFinal / passos;
     var posicaoAtual = 0;
 
-    var rolar = function() {
+    var rolar = function () {
         if (posicaoAtual < posicaoFinal) {
             posicaoAtual += distanciaPorPasso;
             tabelaContainer.scrollTop = posicaoAtual;
@@ -21,7 +21,7 @@ function rolarScrollSuave() {
         }
     };
 
-    var voltarAoTopo = function() {
+    var voltarAoTopo = function () {
         var posicaoInicial = tabelaContainer.scrollTop;
         var duracaoRetorno = 1000; // Tempo total do retorno ao topo em milissegundos
         var intervaloRetorno = 10; // Intervalo entre cada passo do retorno ao topo em milissegundos
@@ -29,7 +29,7 @@ function rolarScrollSuave() {
         var distanciaPorPassoRetorno = posicaoInicial / passosRetorno;
         var posicaoAtualRetorno = posicaoInicial;
 
-        var retorno = function() {
+        var retorno = function () {
             if (posicaoAtualRetorno > 0) {
                 posicaoAtualRetorno -= distanciaPorPassoRetorno;
                 tabelaContainer.scrollTop = posicaoAtualRetorno;
@@ -45,6 +45,12 @@ function rolarScrollSuave() {
     rolar();
 }
 
-window.onload = function() {
+window.onload = function () {
     setTimeout(rolarScrollSuave, 3000);
 }
+
+function recarregarPagina() {
+    location.reload();
+}
+
+setTimeout(recarregarPagina, 3600000);
