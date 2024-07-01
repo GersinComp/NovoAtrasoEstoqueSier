@@ -11,11 +11,12 @@
         <table class="table table-secundary table-striped table-bordered border-dark" id="tabela">
             <thead class="table-primary table-bordered border-dark">
             <tr>
-                <th class="col-sm-2" scope="col">DATA</th>
+                <th class="col-sm-1" scope="col">DATA</th>
                 <th class="col-sm-1" scope="col">LOTE</th>
-                <th class="col-sm-7" scope="col">PEÇA</th>
-                <th class="col-sm-1" scope="col">COR</th>
+                <th class="col-sm-6" scope="col">PEÇA</th>
+                <th class="col-sm-2" scope="col">COR</th>
                 <th class="col-sm-1" scope="col">FALTAM</th>
+                <th class="col-sm-1" scope="col">OBS</th>
             </tr>
             </thead>
             <tbody>
@@ -38,6 +39,9 @@
                             </td>
                             <td class="align-middle">
                                 {{ (dataframe[i]['quantidadeTotal'] - dataframe[i]['quantidadeEntregue']) }}
+                            </td>
+                            <td class="align-middle">
+                                {{ dataframe[i]['obs'] }}
                             </td>
                         </tr>
                     {% else %}

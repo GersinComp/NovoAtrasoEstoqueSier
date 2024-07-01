@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="617516f3-feed-4ad3-9e72-413de61ca200" name="Changes" comment="Modifications in project">
-      <change beforePath="$PROJECT_DIR$/.idea/NovoAtrasoEstoqueSier.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/NovoAtrasoEstoqueSier.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PackArquivos/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PackArquivos/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PackArquivos/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PackArquivos/static/estilo.css" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/static/estilo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PackArquivos/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PackArquivos/templates/listarCadeiras.html" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/templates/listarCadeiras.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PackArquivos/templates/listarCurvados.html" beforeDir="false" afterPath="$PROJECT_DIR$/PackArquivos/templates/listarCurvados.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

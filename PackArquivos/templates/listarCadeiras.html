@@ -14,7 +14,7 @@
                 </a>
             </div>
             <div class="col-sm-5">
-                <form method="GET" action="{{ url_for('generate_pdf', categoria="cadeiras") }}">
+                <form method="GET" action="{{ url_for('generate_pdf', categoria='cadeiras') }}">
                     <button type="submit" class="btn btn-outline-dark">
                         Relatório cadeiras
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -53,9 +53,9 @@
                     <th class="col-sm-1" scope="col">ID</th>
                     <th class="col-sm-1" scope="col">DATA</th>
                     <th class="col-sm-1" scope="col">LOTE</th>
-                    <th class="col-sm-2" scope="col">PEÇA</th>
+                    <th class="col-sm-4" scope="col">PEÇA</th>
                     <th class="col-sm-1" scope="col">COR</th>
-                    <th class="col-sm-3" scope="col">OBSERVAÇÃO</th>
+                    <th class="col-sm-1" scope="col">OBSERVAÇÃO</th>
                     <th class="col-sm-1" scope="col">ENTREGUE</th>
                     <th class="col-sm-1" scope="col">FALTAM</th>
                     <th class="col-sm-1 text-center" scope="col">EDITAR</th>
@@ -71,28 +71,29 @@
                             <td> {{ cadeira.lote }} </td>
                             <td> {{ cadeira.pecas }} </td>
                             <td> {{ cadeira.cor }} </td>
+                            <td> {{ cadeira.obs }} </td>
 
-                            <td>
-                                <div class="accordion accordion-flush h-25" id="accordion{{ cadeira.id }}">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-heading{{ cadeira.id }}">
-                                            <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#flush-collapse{{ cadeira.id }}" aria-expanded="false"
-                                                    aria-controls="flush-collapse{{ cadeira.id }}"
-                                                    style="margin: 0; padding: 0;">
-                                                OBSERVAÇÃO
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapse{{ cadeira.id }}" class="accordion-collapse collapse"
-                                             aria-labelledby="flush-heading{{ cadeira.id }}" data-bs-parent="#accordion{{ cadeira.id }}">
-                                            <div class="accordion-body">
-                                                {{ cadeira.obs }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+<!--                            <td>-->
+<!--                                <div class="accordion accordion-flush h-25" id="accordion{{ cadeira.id }}">-->
+<!--                                    <div class="accordion-item">-->
+<!--                                        <h2 class="accordion-header" id="flush-heading{{ cadeira.id }}">-->
+<!--                                            <button class="accordion-button collapsed" type="button"-->
+<!--                                                    data-bs-toggle="collapse"-->
+<!--                                                    data-bs-target="#flush-collapse{{ cadeira.id }}" aria-expanded="false"-->
+<!--                                                    aria-controls="flush-collapse{{ cadeira.id }}"-->
+<!--                                                    style="margin: 0; padding: 0;">-->
+<!--                                                OBSERVAÇÃO-->
+<!--                                            </button>-->
+<!--                                        </h2>-->
+<!--                                        <div id="flush-collapse{{ cadeira.id }}" class="accordion-collapse collapse"-->
+<!--                                             aria-labelledby="flush-heading{{ cadeira.id }}" data-bs-parent="#accordion{{ cadeira.id }}">-->
+<!--                                            <div class="accordion-body">-->
+<!--                                                {{ cadeira.obs }}-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </td>-->
 
                             <td> {{ cadeira.quantidadeEntregue }} </td>
                             <td> {{ cadeira.quantidadeTotal - cadeira.quantidadeEntregue }} </td>

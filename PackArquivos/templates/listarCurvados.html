@@ -14,7 +14,7 @@
                 </a>
             </div>
             <div class="col-sm-5 mt-1">
-                <form method="GET" action="{{ url_for('generate_pdf', categoria="curvados") }}">
+                <form method="GET" action="{{ url_for('generate_pdf', categoria='curvados') }}">
                     <button type="submit" class="btn btn-outline-dark">
                         Relatório curvados
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -53,9 +53,9 @@
                     <th class="col-sm-1" scope="col">ID</th>
                     <th class="col-sm-1" scope="col">DATA</th>
                     <th class="col-sm-1" scope="col">LOTE</th>
-                    <th class="col-sm-2" scope="col">PEÇA</th>
+                    <th class="col-sm-4" scope="col">PEÇA</th>
                     <th class="col-sm-1" scope="col">COR</th>
-                    <th class="col-sm-3" scope="col">OBSERVAÇÃO</th>
+                    <th class="col-sm-1" scope="col">OBSERVAÇÃO</th>
                     <th class="col-sm-1" scope="col">ENTREGUE</th>
                     <th class="col-sm-1" scope="col">FALTAM</th>
                     <th class="col-sm-1 text-center" scope="col">EDITAR</th>

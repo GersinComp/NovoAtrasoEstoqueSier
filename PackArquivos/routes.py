@@ -63,7 +63,7 @@ def generate_pdf(categoria):
             Paragraph("LOTE", table_header_style),
             Paragraph("PEÇA", table_header_style),
             Paragraph("COR", table_header_style),
-            Paragraph("OBSERVAÇÃO", table_header_style),
+            Paragraph("OBS", table_header_style),
             Paragraph("TOTAL", table_header_style),
             Paragraph("ENTREGUE", table_header_style),
             Paragraph("FALTAM", table_header_style)
@@ -85,7 +85,7 @@ def generate_pdf(categoria):
         data.append(formatted_row)
 
     # Define as larguras das colunas
-    col_widths = [1*cm, 2.8*cm, 2*cm, 4*cm, 3*cm, 6*cm, 2.5*cm, 2.5*cm, 2.5*cm]
+    col_widths = [1*cm, 2.8*cm, 2*cm, 8*cm, 3*cm, 2*cm, 2.5*cm, 2.5*cm, 2.5*cm]
 
     table = Table(data, colWidths=col_widths)
     table.setStyle(TableStyle([
